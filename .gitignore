@@ -1,0 +1,4 @@
+__pycache__/
+.venv/
+.vscod/
+.DS_Store

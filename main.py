@@ -1,5 +1,4 @@
 import random
-import sys
 from games_data import GAMES
 from ai_recommend import AiError, recommend_by_ai
 

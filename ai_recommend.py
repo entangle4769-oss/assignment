@@ -1,11 +1,13 @@
-"""Claude API로 현재 상황에 맞는 술게임을 고르는 모듈."""
+"""Gemini API(무료 등급)로 현재 상황에 맞는 술게임을 고르는 모듈."""
 
+import json
 import os
 
-import anthropic
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 
-DEFAULT_MODEL = "claude-sonnet-5-5"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 SYSTEM = (
     "너는 술자리 게임을 추천하는 도우미다. 사용자가 적은 상황(인원, 분위기, 장소, 준비물 등)을 보고 "
@@ -13,17 +15,13 @@ SYSTEM = (
     "reason에는 그 게임을 고른 이유를 한두 문장으로 쓴다."
 )
 
-RECOMMEND_TOOL = {
-    "name": "recommend_game",
-    "description": "목록에서 고른 게임 하나와 그 이유를 제출한다.",
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "game_id": {"type": "integer", "description": "목록에 있는 게임의 번호(id)"},
-            "reason": {"type": "string", "description": "추천 이유 한두 문장"},
-        },
-        "required": ["game_id", "reason"],
+RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "game_id": {"type": "integer", "description": "목록에 있는 게임의 번호(id)"},
+        "reason": {"type": "string", "description": "추천 이유 한두 문장"},
     },
+    "required": ["game_id", "reason"],
 }
 
 
@@ -41,23 +39,25 @@ def build_catalog(games):
     return "\n".join(lines)
 
 
-def pick_game(response, games):
-    """응답의 도구 호출에서 게임 번호를 꺼내 목록에 있는 게임인지 확인한다."""
-    for block in response.content:
-        if block.type == "tool_use" and block.name == "recommend_game":
-            game_id = block.input.get("game_id")
-            game = next((g for g in games if g["id"] == game_id), None)
-            if game is None:
-                raise AiError("AI가 목록에 없는 게임을 골랐습니다. 다시 시도해 주세요.")
-            return game, block.input.get("reason", "")
-    raise AiError("AI 응답에서 추천 결과를 찾지 못했습니다. 다시 시도해 주세요.")
+def pick_game(response_text, games):
+    """응답 JSON에서 게임 번호를 꺼내 목록에 있는 게임인지 확인한다."""
+    try:
+        data = json.loads(response_text or "")
+        game_id = data["game_id"]
+    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        raise AiError("AI 응답에서 추천 결과를 찾지 못했습니다. 다시 시도해 주세요.") from e
+    game = next((g for g in games if g["id"] == game_id), None)
+    if game is None:
+        raise AiError("AI가 목록에 없는 게임을 골랐습니다. 다시 시도해 주세요.")
+    return game, data.get("reason", "")
 
 
 def get_client():
     load_dotenv()
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        raise AiError("ANTHROPIC_API_KEY가 없습니다. .env 파일에 키를 넣어 주세요. (README 참고)")
-    return anthropic.Anthropic()
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise AiError("GEMINI_API_KEY가 없습니다. .env 파일에 키를 넣어 주세요. (README 참고)")
+    return genai.Client(api_key=api_key)
 
 
 def recommend_by_ai(situation, games, client=None):
@@ -66,19 +66,15 @@ def recommend_by_ai(situation, games, client=None):
         client = get_client()
     model = os.environ.get("WK5_MODEL", DEFAULT_MODEL)
     try:
-        response = client.messages.create(
+        response = client.models.generate_content(
             model=model,
-            max_tokens=500,
-            system=SYSTEM,
-            tools=[RECOMMEND_TOOL],
-            tool_choice={"type": "tool", "name": "recommend_game"},
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"<games>\n{build_catalog(games)}\n</games>\n\n상황: {situation}",
-                }
-            ],
+            contents=f"<games>\n{build_catalog(games)}\n</games>\n\n상황: {situation}",
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM,
+                response_mime_type="application/json",
+                response_json_schema=RESPONSE_SCHEMA,
+            ),
         )
-    except anthropic.APIError as e:
+    except Exception as e:  # API 오류와 네트워크 오류 모두 메뉴로 돌아가게 한다.
         raise AiError(f"API 호출에 실패했습니다: {e}") from e
-    return pick_game(response, games)
+    return pick_game(response.text, games)

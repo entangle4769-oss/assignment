@@ -1,6 +1,7 @@
 import random
 import sys
 from games_data import GAMES
+from ai_recommend import AiError, recommend_by_ai
 
 VALID_CATEGORIES = ["순발력", "눈치", "말빨", "운", "기억력"]
 
@@ -109,6 +110,24 @@ def view_detail(games):
         return
     print_game_detail(target)
 
+def ai_recommend(games, filters):
+    matched = filter_games(games, filters)
+    if not matched:
+        print("\n조건에 맞는 게임이 없습니다.")
+        return
+    situation = input("\n상황을 자유롭게 적어 주세요 (예: 5명, 첫 만남이라 어색함): ").strip()
+    if not situation:
+        print("상황을 입력하지 않아 AI 추천을 건너뜁니다.")
+        return
+    try:
+        game, reason = recommend_by_ai(situation, matched)
+    except AiError as e:
+        print(f"\n{e}")
+        return
+    print("\n[AI 추천]")
+    print_game_detail(game)
+    print(f"추천 이유: {reason}")
+
 def main():
     filters = {"players": None, "category": None, "no_item_only": False}
     print("=" * 40)
@@ -124,7 +143,8 @@ def main():
         print("4. 조건 해제")
         print("5. 랜덤 추천")
         print("6. 게임 자세히 보기")
-        print("7. 종료")
+        print("7. AI 추천")
+        print("8. 종료")
 
         try:
             choice = input("메뉴 번호를 입력하세요: ").strip()
@@ -145,6 +165,8 @@ def main():
         elif choice == "6":
             view_detail(GAMES)
         elif choice == "7":
+            ai_recommend(GAMES, filters)
+        elif choice == "8":
             print("\n랜덤 술게임 사전을 종료합니다. 즐거운 모임 되세요!")
             break
         else:

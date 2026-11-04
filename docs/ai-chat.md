@@ -181,3 +181,206 @@ uv run python main.py
 ## AI
 
 `[도구 사용: Bash]`
+
+## AI
+
+`[도구 사용: mcp__ccd_turn__wrap_up]`
+
+## AI
+
+`free-api-gemini` 브랜치를 push했습니다. 올리기 전에 대화 원문을 최신으로 다시 만들었고, 변경분과 대화 원문에 키가 없고 `.env`도 추적되지 않는 것을 확인했습니다.
+
+이 PC에는 `gh`가 없어서 PR은 아래 링크에서 직접 열어 주세요. base가 `main`인지 확인하세요.
+
+**[PR 만들기](https://github.com/entangle4769-oss/assignment/pull/new/free-api-gemini)**
+
+제목과 설명은 그대로 붙여 넣으면 됩니다.
+
+**제목**
+```
+Switch AI recommendation to the free Gemini API
+```
+
+**설명**
+```
+## 변경 내용
+- 메뉴 7번 AI 추천의 API를 Anthropic(유료)에서 Gemini 무료 등급으로 교체
+- 응답을 JSON 스키마로 받고, 추천 번호가 후보 목록에 있는지 확인
+- API·네트워크 오류가 나도 안내 후 메뉴로 복귀
+- .env.example과 AI 대화 원문(docs/ai-chat.md) 추가, .env를 .gitignore에 추가
+- api-plan.md와 README를 Gemini 기준으로 수정
+
+## 실행 방법
+cp .env.example .env 후 GEMINI_API_KEY를 넣고 uv sync, uv run python main.py
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+## 남은 일
+1. PR을 만들고 `main`에 Merge합니다.
+2. icampus에 저장소 URL `https://github.com/entangle4769-oss/assignment`와 Gemini 키를 제출합니다.
+3. 늦은 제출이 되는지 조교나 교수님께 확인합니다. 11/4 자정 기한이 지났습니다.
+
+## 참고 사항
+- **대화 원문:** `docs/ai-chat.md`는 push 직전까지의 기록이라 이 메시지는 들어 있지 않습니다. 이전 Anthropic 버전을 만들 때의 대화가 다른 곳에 있다면 그것도 `docs/`에 추가해 주세요.
+- **브랜치 정리:** 이미 합쳐진 `add-readme` 브랜치는 Merge 후 GitHub에서 지워도 됩니다. 저장소 관리 평가에서 더 깔끔하게 보입니다.
+
+## 사용자
+
+파일을 어디에 만들라는거야?
+
+## AI
+
+`[도구 사용: Bash]`
+
+## AI
+
+`.env` 파일은 `main.py`가 있는 프로젝트 폴더에 만들면 됩니다. 경로는 `C:\programming\wk9\.env`입니다. 방금 확인해 보니 이 폴더에 `.env`가 아직 없으니, **7번 메뉴를 실제 키로 시험한 적이 없다면 아직 확인이 안 된 상태입니다.**
+
+**1. 파일 만들기.** 예시 파일을 복사합니다.
+
+```bash
+cd /c/programming/wk9
+```
+
+```bash
+cp .env.example .env
+```
+
+**2. 키 넣기.** `.env`를 메모장 등으로 열어 내용을 아래 한 줄로 바꿉니다. `=` 뒤에는 [Google AI Studio](https://aistudio.google.com/apikey)에서 발급받은 키를 공백이나 따옴표 없이 붙여 넣으세요.
+
+```
+GEMINI_API_KEY=발급받은_키
+```
+
+메모장으로 저장할 때는 파일 이름이 `.env.txt`가 되지 않게, 파일 형식을 "모든 파일"로 두세요.
+
+**3. 실행해서 시험하기.**
+
+```bash
+uv run python main.py
+```
+
+메뉴에서 `7`을 누르고 `5명, 첫 만남이라 어색함`처럼 상황을 입력합니다. 게임 정보와 추천 이유가 나오면 성공이고, 오류 문구가 나오면 그 내용을 여기에 붙여 주세요. 키 값은 지우고 붙여 주시면 됩니다.
+
+`.env`는 `.gitignore`에 들어 있어서 GitHub에 올라가지 않습니다. 키는 저장소가 아니라 icampus로만 제출하세요.
+
+## 사용자
+
+잘 되네
+
+## AI
+
+실제 키로도 잘 된다면 기획대로 동작하는 것까지 확인된 거예요. 코드는 더 고칠 게 없습니다.
+
+이제 제출만 하시면 됩니다.
+
+1. [PR을 만들고](https://github.com/entangle4769-oss/assignment/pull/new/free-api-gemini) `main`에 Merge합니다. 제목과 설명은 앞서 드린 내용을 그대로 쓰면 됩니다.
+2. icampus에 저장소 URL `https://github.com/entangle4769-oss/assignment`와 Gemini 키를 제출합니다.
+3. 기한이 11/4 자정이라 지났으니, 늦은 제출이 가능한지 조교나 교수님께 확인합니다.
+
+수고하셨어요!
+
+## 사용자
+
+어떻게 pr 만들지?
+
+## AI
+
+웹에서 만들면 되고, 2분이면 끝납니다.
+
+1. [PR 만들기 링크](https://github.com/entangle4769-oss/assignment/pull/new/free-api-gemini)를 엽니다. GitHub 로그인이 안 되어 있으면 먼저 로그인하세요.
+2. 맨 위 브랜치 표시가 `base: main` ← `compare: free-api-gemini`인지 확인합니다.
+3. 제목 칸에 아래 내용을 붙여 넣습니다.
+
+   ```
+   Switch AI recommendation to the free Gemini API
+   ```
+
+4. 설명 칸에 아래 내용을 붙여 넣습니다.
+
+   ```
+   ## 변경 내용
+   - 메뉴 7번 AI 추천의 API를 Anthropic(유료)에서 Gemini 무료 등급으로 교체
+   - 응답을 JSON 스키마로 받고, 추천 번호가 후보 목록에 있는지 확인
+   - API·네트워크 오류가 나도 안내 후 메뉴로 복귀
+   - .env.example과 AI 대화 원문(docs/ai-chat.md) 추가, .env를 .gitignore에 추가
+   - api-plan.md와 README를 Gemini 기준으로 수정
+
+   ## 실행 방법
+   cp .env.example .env 후 GEMINI_API_KEY를 넣고 uv sync, uv run python main.py
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   ```
+
+5. 초록색 **Create pull request** 버튼을 누릅니다.
+6. 다음 화면에서 **Merge pull request**를 누르고, **Confirm merge**를 누릅니다.
+
+`main`에 합쳐지면 저장소 첫 화면에 `docs/` 폴더와 `.env.example`이 보이고, `.env`는 보이지 않아야 합니다. 그 다음 icampus에 저장소 URL과 키를 제출하면 끝입니다.
+
+중간에 화면이 다르게 나오면 어떤 문구가 보이는지 알려 주세요.
+
+## 사용자
+
+PR까지 다 했는데 감점 요소 있나?
+
+## AI
+
+실제 저장소 상태를 평가 항목별로 점검해 볼게요.
+
+## AI
+
+`[도구 사용: mcp__ccd_turn__update_plan]`
+
+## AI
+
+`[도구 사용: Bash]`
+
+## AI
+
+`[도구 사용: mcp__ccd_turn__wrap_up]`
+
+## AI
+
+감점 요소가 몇 가지 남아 있습니다. 가장 큰 건 **기한 초과**(최종 Merge가 11/5 02:37)와 **지저분한 커밋 기록**입니다. 재현성과 키 관리에는 문제가 없고, 실제 점수는 채점 기준에 따라 달라집니다.
+
+## 항목별 점검
+
+| 평가 항목 | 상태 | 근거 |
+|---|---|---|
+| 기획대로 작동 (6점) | 문제 없어 보임 | 직접 7번 메뉴 성공을 확인하셨고, 예외 처리도 시험했습니다 |
+| 재현 가능 (6점) | 문제 없음 | GitHub에서 새로 클론해 `uv sync --locked`와 실행이 됐습니다. 7번 메뉴는 키가 없어 이 시험에선 돌리지 않았습니다 |
+| 저장소 관리 (4점) | **감점 위험 있음** | 아래 2번, 4번 참고 |
+| 코드 이해 (4점) | 대체로 괜찮음 | README는 약 50줄이라 3페이지 이내이고, 구조와 호출 흐름을 설명합니다 |
+
+## 감점될 수 있는 부분
+1. **제출 기한:** 11/4 자정을 약 2시간 37분 넘겼습니다. 감점 규정은 수업마다 다르니 아직 문의 전이라면 먼저 확인하세요. 11/4 23:48 업로드는 기한 안이었지만, 유료 API를 썼고 `.env.example`과 대화 원문이 없었습니다.
+2. **커밋 기록:** 평가 항목에 "지저분한 커밋 로그"가 직접 적혀 있어서 가장 걸릴 만한 부분입니다.
+   - 내용을 알 수 없는 메시지: `구메모장`, `구메모장 수정`, `파일 수정`
+   - 같은 메시지 중복: `Add README and .gitignore` 2개
+   - 오타: `Remove unusued files`
+   - PR 없이 `main`에 직접 올린 커밋: `Add files via upload`
+3. **대화 원문:** 두 가지가 부족합니다.
+   - 이전 Anthropic 버전을 만들 때의 대화가 없습니다.
+   - `docs/ai-chat.md`는 제가 도구 실행 결과를 뺀 기록이고 push 이후 대화도 없어서, 엄밀한 "원문"은 아닙니다.
+4. **사소한 정리거리:**
+   - `main.py:2`의 `import sys`는 쓰이지 않습니다.
+   - 프로젝트 이름 `wk5-retry`와 환경변수 `WK5_MODEL`에 5주차 이름이 남아 있습니다.
+   - 합쳐진 원격 브랜치 `add-readme`, `free-api-gemini`가 남아 있습니다.
+5. **채점 때 키 동작:** 무료 키는 호출 횟수 제한이 있어, 채점 때 한도에 걸리면 7번 메뉴가 오류 문구만 보여 줄 수 있습니다. 키를 icampus에 냈는지도 다시 확인하세요. README에 이미 냈다고 적혀 있습니다.
+
+## 추천
+- **과거 커밋은 고치지 마세요.** 고치려면 `main`을 강제 push해야 하는데, 합쳐진 PR 기록과 어긋나고 제출 시각 근거까지 흐려질 수 있습니다. 기한을 넘긴 상황이라 더 위험합니다.
+- **4번과 대화 원문 갱신은 작은 PR 하나로 처리할 수 있습니다.** 이전 대화 기록이 있다면 함께 넣으면 됩니다. 다만 Merge 시각이 더 늦어지니, 최종 제출 시점을 따지는 수업이면 먼저 문의하세요. `WK5_MODEL` 이름 변경은 동작 확인된 코드를 건드리므로 빼고, 프로젝트 이름도 그대로 둬도 됩니다.
+
+## 사용자
+
+응, 정리해줘
+
+## AI
+
+`[도구 사용: mcp__ccd_turn__update_plan]`
+
+## AI
+
+`[도구 사용: Bash]`
